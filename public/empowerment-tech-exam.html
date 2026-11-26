@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Term 2 Examination: Empowerment Technologies</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --primary: #0038a8;
+      --accent: #ce1126;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #d1d5db;
+    }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body { margin: 0; background: var(--bg); color: var(--text); display: grid; place-items: center; min-height: 100vh; padding: 1rem; }
+    .card { background: var(--card); width: 100%; max-width: 760px; border-radius: 12px; padding: 2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .header-banner { border-bottom: 2px solid #e5e7eb; padding-bottom: 0.75rem; margin-bottom: 1.25rem; }
+    .header-banner small { color: var(--muted); font-weight: 600; display: block; }
+    .header-banner strong { color: var(--primary); font-size: 1rem; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 1rem; flex-wrap: wrap; }
+    .meta-group { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .badge { font-weight: 600; color: var(--muted); }
+    .type-pill { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; padding: 0.25rem 0.65rem; border-radius: 999px; background: #f3f4f6; color: #374151; }
+    .timer { font-size: 1.15rem; font-weight: 700; padding: 0.35rem 0.85rem; border-radius: 999px; background: #e0e7ff; color: var(--primary); }
+    .timer.danger { background: #fee2e2; color: var(--accent); }
+    .progress-track { width: 100%; height: 6px; background: #e5e7eb; border-radius: 999px; overflow: hidden; margin-bottom: 1.5rem; }
+    .progress-fill { height: 100%; background: var(--primary); transition: width 0.2s ease; }
+    h2 { margin-top: 0; font-size: 1.18rem; line-height: 1.55; }
+    .sub-note { font-size: 0.9rem; color: var(--muted); margin-top: -0.5rem; margin-bottom: 1rem; }
+    .login-form { display: grid; gap: 1rem; margin-top: 1rem; }
+    .field-group label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 0.35rem; color: var(--text); }
+    .rules-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 0.85rem 1rem; font-size: 0.9rem; color: #92400e; margin-top: 0.5rem; line-height: 1.5; }
+    .choices { display: grid; gap: 0.7rem; margin: 1.25rem 0; }
+    .choice-btn { text-align: left; padding: 0.85rem 1rem; border: 2px solid var(--border); border-radius: 8px; background: #fff; cursor: pointer; font-size: 0.98rem; line-height: 1.4; transition: 0.15s; }
+    .choice-btn:hover { border-color: var(--primary); background: #f8fafc; }
+    .choice-btn.selected { border-color: var(--primary); background: #eff6ff; font-weight: 600; }
+    .mod-box { margin-top: 0.5rem; margin-bottom: 1.25rem; }
+    .mod-box label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--accent); }
+    .enum-grid { display: grid; gap: 0.65rem; margin: 1.25rem 0 1.5rem; }
+    .text-input { width: 100%; padding: 0.75rem 0.9rem; border: 2px solid var(--border); border-radius: 8px; font-size: 1rem; }
+    .text-input:focus { outline: none; border-color: var(--primary); }
+    .actions { display: flex; justify-content: flex-end; margin-top: 1rem; }
+    .next-btn { background: var(--primary); color: #fff; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    .next-btn:hover { opacity: 0.92; }
+    .student-meta-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.92rem; }
+    .score-box { background: #eff6ff; border: 2px solid var(--primary); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .score-main { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin: 0 0 0.25rem; }
+    .part-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.6rem; margin-bottom: 1.25rem; }
+    .part-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 0.85rem; font-size: 0.9rem; }
+    .print-btn { background: #1f2937; color: #fff; border: none; padding: 0.65rem 1.2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; margin-bottom: 1rem; }
+    .summary-item { padding: 0.75rem 0; border-bottom: 1px solid #e5e7eb; font-size: 0.95rem; }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .card { box-shadow: none; max-width: 100%; padding: 0.5rem; }
+      .print-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" id="app"></main>
+
+  <script>
+    const examItems = [
+      // PART I: MULTIPLE CHOICE (Items 1–40)
+      {
+        id: "ITEM-01",
+        label: "Item 1",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which term refers to technologies that provide access to information through telecommunications, focusing on communication networks such as the internet, wireless networks, cell phones, and other communication media?",
+        choices: [
+          "Information Technology",
+          "Information and Communications Technology (ICT)",
+          "Digital Literacy",
+          "Telecommunications Systems"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-02",
+        label: "Item 2",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Web 2.0 introduced dynamic and interactive web pages compared to Web 1.0. Which feature best characterizes Web 2.0?",
+        choices: [
+          "Static HTML pages with read-only content",
+          "Folksonomy, rich user experience, and user participation",
+          "Decentralized blockchain ledgers",
+          "Voice-only automated menus"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-03",
+        label: "Item 3",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which version of the web aims to make internet data machine-readable so devices and software can understand context, infer meaning, and deliver personalized results?",
+        choices: [
+          "Web 1.0",
+          "Web 2.0",
+          "Web 3.0 (Semantic Web)",
+          "Web 0.5"
+        ],
+        correctIndex: 2
+      },
+      {
+        id: "ITEM-04",
+        label: "Item 4",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Sending fraudulent emails or messages that appear to come from reputable sources to steal sensitive data like passwords or credit card numbers is known as:",
+        choices: [
+          "Malware",
+          "Phishing",
+          "Spamming",
+          "Defragmentation"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-05",
+        label: "Item 5",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which type of malicious software is designed to replicate itself and spread to other computers without human intervention, often slowing down networks?",
+        choices: [
+          "Trojan horse",
+          "Worm",
+          "Spyware",
+          "Adware"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-06",
+        label: "Item 6",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Leaving a public computer logged into your personal email or social media account violates which online safety habit?",
+        choices: [
+          "Backing up files regularly",
+          "Locking or logging out of sessions on shared devices",
+          "Using two-factor authentication",
+          "Updating antivirus definitions"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-07",
+        label: "Item 7",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which practice significantly strengthens account security even if a password is leaked?",
+        choices: [
+          "Reusing the same password across sites",
+          "Enabling Two-Factor Authentication (2FA)",
+          "Disabling browser updates",
+          "Sharing recovery codes in chat"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-08",
+        label: "Item 8",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Intellectual property rights that protect original literary, artistic, musical, and software works from unauthorized copying or distribution are covered by:",
+        choices: [
+          "Patent",
+          "Copyright",
+          "Trademark",
+          "Trade secret"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-09",
+        label: "Item 9",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Using a short excerpt of a copyrighted work for criticism, news reporting, teaching, or research under legal limits may fall under:",
+        choices: [
+          "Fair use",
+          "Plagiarism",
+          "Piracy",
+          "Open source"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-10",
+        label: "Item 10",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which Microsoft Word feature automates sending personalized letters, envelopes, or labels to multiple recipients using a main document and a data source?",
+        choices: [
+          "Track Changes",
+          "Mail Merge",
+          "SmartArt",
+          "Footnotes"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-11",
+        label: "Item 11",
+        type: "multiple-choice",
+        duration: 60,
+        question: "In Mail Merge, what file or list holds the variable recipient details such as first name, last name, address, and email?",
+        choices: [
+          "Main document",
+          "Data source",
+          "Style template",
+          "Macro module"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-12",
+        label: "Item 12",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which spreadsheet function returns the arithmetic mean of a range of numeric cells B2:B10?",
+        choices: [
+          "=COUNT(B2:B10)",
+          "=AVERAGE(B2:B10)",
+          "=MEDIAN(B2:B10)",
+          "=MODE(B2:B10)"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-13",
+        label: "Item 13",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which Excel function evaluates a logical condition and returns one value if true and another value if false?",
+        choices: [
+          "VLOOKUP",
+          "IF",
+          "SUMIF",
+          "CONCAT"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-14",
+        label: "Item 14",
+        type: "multiple-choice",
+        duration: 60,
+        question: "In Excel, which reference type locks both the column and the row when a formula is copied across cells?",
+        choices: [
+          "Relative reference (A1)",
+          "Mixed reference (A$1)",
+          "Absolute reference ($A$1)",
+          "Circular reference"
+        ],
+        correctIndex: 2
+      },
+      {
+        id: "ITEM-15",
+        label: "Item 15",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which presentation design practice improves readability and audience focus during a live talk?",
+        choices: [
+          "Packing each slide with paragraphs of small text",
+          "Using high contrast, concise bullet points, and consistent typography",
+          "Adding loud sound effects to every transition",
+          "Using five clashing font styles on one slide"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-16",
+        label: "Item 16",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which graphic file format supports lossless compression and transparent backgrounds, making it ideal for logos and icons on the web?",
+        choices: [
+          "JPEG / JPG",
+          "PNG",
+          "BMP",
+          "TIFF"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-17",
+        label: "Item 17",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which image format uses lossy compression best suited for complex photographs with smooth color gradients where small file size matters?",
+        choices: [
+          "PNG",
+          "JPEG / JPG",
+          "GIF",
+          "SVG"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-18",
+        label: "Item 18",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which visual design principle guides the viewer's eye to the most important element first using size, color, or placement?",
+        choices: [
+          "Repetition",
+          "Emphasis / Contrast",
+          "Alignment",
+          "Proximity"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-19",
+        label: "Item 19",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Grouping related text labels near the form fields or images they describe illustrates which principle?",
+        choices: [
+          "Proximity",
+          "Balance",
+          "Rhythm",
+          "Scale"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-20",
+        label: "Item 20",
+        type: "multiple-choice",
+        duration: 60,
+        question: "An image format defined by mathematical paths, lines, and curves that scales infinitely without pixelation is a:",
+        choices: [
+          "Raster image",
+          "Vector graphic",
+          "Raw bitmap",
+          "Halftone print"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-21",
+        label: "Item 21",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which web platform category lets users build websites visually using drag-and-drop blocks or templates without writing full code from scratch?",
+        choices: [
+          "Content Management System (CMS) / Website Builder",
+          "Command-Line Compiler",
+          "Relational Database Engine",
+          "Packet Sniffer"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-22",
+        label: "Item 22",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Designing a website so its layout adapts smoothly to desktops, tablets, and smartphones is called:",
+        choices: [
+          "Static hosting",
+          "Responsive web design",
+          "Frame-based layout",
+          "Screen scraping"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-23",
+        label: "Item 23",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which web design element helps visitors navigate pages predictably and find key sections quickly?",
+        choices: [
+          "Clear navigation menu and visual hierarchy",
+          "Auto-playing background music",
+          "Hidden links in random colors",
+          "Pop-up ads blocking content"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-24",
+        label: "Item 24",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Storing files, running applications, and accessing computing resources over the internet rather than solely on a local hard drive defines:",
+        choices: [
+          "Cloud computing",
+          "Local area networking",
+          "BIOS flashing",
+          "Disk partitioning"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-25",
+        label: "Item 25",
+        type: "multiple-choice",
+        duration: 60,
+        question: "A cloud service model that provides ready-to-use applications over the web—such as cloud office suites or webmail—is:",
+        choices: [
+          "IaaS (Infrastructure as a Service)",
+          "PaaS (Platform as a Service)",
+          "SaaS (Software as a Service)",
+          "DaaS (Desktop as a Service)"
+        ],
+        correctIndex: 2
+      },
+      {
+        id: "ITEM-26",
+        label: "Item 26",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which media element combines motion, sound, and narration to explain complex procedures or tell stories effectively online?",
+        choices: [
+          "Plain text",
+          "Video",
+          "Static table",
+          "Raw CSV"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-27",
+        label: "Item 27",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Embedded interactive maps, quizzes, or 360-degree tours on a webpage primarily serve to:",
+        choices: [
+          "Increase static text length",
+          "Encourage active user engagement and exploration",
+          "Disable mobile viewing",
+          "Replace all accessibility labels"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-28",
+        label: "Item 28",
+        type: "multiple-choice",
+        duration: 60,
+        question: "What should you check before embedding third-party interactive media or widgets into a website?",
+        choices: [
+          "Loading speed impact, mobile responsiveness, and permission/licensing terms",
+          "Whether the font is Comic Sans",
+          "Deleting backups first",
+          "Turning off HTTPS"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-29",
+        label: "Item 29",
+        type: "multiple-choice",
+        duration: 60,
+        question: "In the ICT Project Process for Social Change, what is the primary purpose of planning and conceptualizing?",
+        choices: [
+          "Publishing final analytics reports only",
+          "Identifying a community issue, defining objectives, target audience, and deliverables",
+          "Skipping research to start coding immediately",
+          "Closing the project before testing"
+        ],
+        correctIndex: 1
+      },
+      {
+        id: "ITEM-30",
+        label: "Item 30",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which tool or method helps a team organize tasks, assign roles, and track milestones during an ICT project?",
+        choices: [
+          "Project timeline / task board (e.g., Kanban or Gantt tracker)",
+          "Calculator history log",
+          "Screen saver settings",
+          "Recycle Bin"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-31",
+        label: "Item 31",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Why is curating content important when building an advocacy or informational site?",
+        choices: [
+          "It ensures information is accurate, relevant, ethical, and aligned with the project goal",
+          "It removes all citations and sources",
+          "It lengthens pages with filler text",
+          "It avoids checking facts"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-32",
+        label: "Item 32",
+        type: "multiple-choice",
+        duration: 60,
+        question: "When developing an ICT project, why should you test features across different browsers and screen sizes?",
+        choices: [
+          "To catch layout breaks, broken links, or script errors before public launch",
+          "To slow down page rendering",
+          "To hide navigation menus on phones",
+          "To prevent users from submitting forms"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-33",
+        label: "Item 33",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which action best supports releasing and promoting an ICT project ethically and effectively?",
+        choices: [
+          "Sharing clear, accurate posts on relevant channels with proper credits and call-to-action",
+          "Buying fake engagement metrics to deceive stakeholders",
+          "Posting unverified rumors",
+          "Blocking community feedback"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-34",
+        label: "Item 34",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Monitoring site traffic, bounce rates, user comments, and form submissions after launch belongs to which phase?",
+        choices: [
+          "Maintenance and evaluation",
+          "Pre-planning only",
+          "Hardware assembly",
+          "Decommissioning"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-35",
+        label: "Item 35",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Updating outdated information, fixing broken links, and patching security vulnerabilities after launch are examples of:",
+        choices: [
+          "Site maintenance",
+          "Plagiarism",
+          "Data wiping",
+          "Overclocking"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-36",
+        label: "Item 36",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which metric helps evaluate whether visitors actually read or interact with a campaign page rather than leaving immediately?",
+        choices: [
+          "Bounce rate and average engagement/time on page",
+          "Monitor refresh rate",
+          "Keyboard click count",
+          "Power cable wattage"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-37",
+        label: "Item 37",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Gathering feedback from target beneficiaries or users after launch helps a team:",
+        choices: [
+          "Measure real-world usefulness and plan improvements for future iterations",
+          "Ignore user accessibility needs",
+          "Delete project documentation",
+          "Stop updating content"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-38",
+        label: "Item 38",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Which practice protects user privacy when collecting feedback or sign-ups in an ICT project?",
+        choices: [
+          "Requesting only necessary information and explaining how data will be used",
+          "Publishing respondents' personal contact details publicly without consent",
+          "Storing passwords in plain text",
+          "Forcing unrelated personal IDs"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-39",
+        label: "Item 39",
+        type: "multiple-choice",
+        duration: 60,
+        question: "Adding descriptive alt text to images in a web project primarily helps:",
+        choices: [
+          "Screen-reader users and search engines understand image content",
+          "Increase image file size tenfold",
+          "Block search indexing",
+          "Break responsive grids"
+        ],
+        correctIndex: 0
+      },
+      {
+        id: "ITEM-40",
+        label: "Item 40",
+        type: "multiple-choice",
+        duration: 60,
+        question: "When evaluating the overall success of an ICT project for social change, which criterion is most central?",
+        choices: [
+          "Alignment with the stated social objective, usability, and measurable impact or reach",
+          "Number of decorative animations used",
+          "File size of raw project folders",
+          "Use of obscure jargon"
+        ],
+        correctIndex: 0
+      },
+
+      // PART II: MODIFIABLE TRUE OR FALSE (Items 41–50)
+      {
+        id: "ITEM-41",
+        label: "Item 41",
+        type: "true-false",
+        duration: 120,
+        question: "A strong password should be easy to guess, based on your birthdate, and reused across all accounts.",
+        isTrue: false,
+        acceptedCorrections: [
+          "long, complex/unique, and not reused across accounts",
+          "long, complex, unique, and not reused across accounts",
+          "strong, unique, and not reused across accounts",
+          "complex, unique, and not reused across accounts"
+        ]
+      },
+      {
+        id: "ITEM-42",
+        label: "Item 42",
+        type: "true-false",
+        duration: 120,
+        question: "Raster graphics are composed of a grid of pixels and can lose sharpness when enlarged significantly.",
+        isTrue: true,
+        acceptedCorrections: []
+      },
+      {
+        id: "ITEM-43",
+        label: "Item 43",
+        type: "true-false",
+        duration: 120,
+        question: "In spreadsheet software, formulas and functions typically begin with an equals sign (=).",
+        isTrue: true,
+        acceptedCorrections: []
+      },
+      {
+        id: "ITEM-44",
+        label: "Item 44",
+        type: "true-false",
+        duration: 120,
+        question: "Web 1.0 websites are widely known as the \"read-write\" social web driven by user-generated content and comments.",
+        isTrue: false,
+        acceptedCorrections: [
+          "web 2.0",
+          "read-only",
+          "read only"
+        ]
+      },
+      {
+        id: "ITEM-45",
+        label: "Item 45",
+        type: "true-false",
+        duration: 120,
+        question: "Giving proper attribution and respecting licensing terms helps prevent copyright infringement and plagiarism.",
+        isTrue: true,
+        acceptedCorrections: []
+      },
+      {
+        id: "ITEM-46",
+        label: "Item 46",
+        type: "true-false",
+        duration: 120,
+        question: "A confusing navigation bar and illegible text color contrast improve user experience on a website.",
+        isTrue: false,
+        acceptedCorrections: [
+          "harm",
+          "worsen",
+          "hurt",
+          "ruin"
+        ]
+      },
+      {
+        id: "ITEM-47",
+        label: "Item 47",
+        type: "true-false",
+        duration: 120,
+        question: "Cloud storage allows users to access synchronized files across multiple authorized devices with an internet connection.",
+        isTrue: true,
+        acceptedCorrections: []
+      },
+      {
+        id: "ITEM-48",
+        label: "Item 48",
+        type: "true-false",
+        duration: 120,
+        question: "Publishing an ICT project means the work is completely finished and never needs updates or evaluation again.",
+        isTrue: false,
+        acceptedCorrections: [
+          "requires ongoing maintenance, updates, and evaluation",
+          "requires maintenance, updates, and evaluation",
+          "still requires maintenance, updates, and evaluation"
+        ]
+      },
+      {
+        id: "ITEM-49",
+        label: "Item 49",
+        type: "true-false",
+        duration: 120,
+        question: "Collecting feedback from the target community during and after rollout helps refine a social change project.",
+        isTrue: true,
+        acceptedCorrections: []
+      },
+      {
+        id: "ITEM-50",
+        label: "Item 50",
+        type: "true-false",
+        duration: 120,
+        question: "Cyberbullying and online harassment are harmless forms of digital expression that have no real-world impact.",
+        isTrue: false,
+        acceptedCorrections: [
+          "harmful behaviors with serious psychological and social impacts",
+          "harmful behaviors with real-world psychological and social impacts",
+          "harmful behaviors"
+        ]
+      },
+
+      // PART III: ENUMERATION (Items 51–60)
+      {
+        id: "ITEM-51-53",
+        label: "Items 51–53 (3 pts)",
+        type: "enumeration",
+        duration: 120,
+        question: "List three (3) common types of malware or online threats.",
+        itemCount: 3,
+        acceptedAnswers: [
+          "virus",
+          "worm",
+          "trojan horse",
+          "trojan",
+          "ransomware",
+          "spyware",
+          "adware",
+          "phishing"
+        ]
+      },
+      {
+        id: "ITEM-54-56",
+        label: "Items 54–56 (3 pts)",
+        type: "enumeration",
+        duration: 120,
+        question: "List three (3) core components or steps involved in a Mail Merge workflow in word processing.",
+        itemCount: 3,
+        acceptedAnswers: [
+          "main document",
+          "data source",
+          "recipient list",
+          "merge fields",
+          "previewing/completing the merge",
+          "previewing the merge",
+          "completing the merge",
+          "preview and complete merge"
+        ]
+      },
+      {
+        id: "ITEM-57-58",
+        label: "Items 57–58 (2 pts)",
+        type: "enumeration",
+        duration: 120,
+        question: "List two (2) visual design principles used when creating graphics or web layouts.",
+        itemCount: 2,
+        acceptedAnswers: [
+          "balance",
+          "contrast",
+          "emphasis",
+          "emphasis / contrast",
+          "alignment",
+          "proximity",
+          "repetition",
+          "hierarchy",
+          "whitespace",
+          "white space"
+        ]
+      },
+      {
+        id: "ITEM-59-60",
+        label: "Items 59–60 (2 pts)",
+        type: "enumeration",
+        duration: 120,
+        question: "List two (2) post-launch activities performed during ICT project maintenance and evaluation.",
+        itemCount: 2,
+        acceptedAnswers: [
+          "updating content",
+          "fixing broken links/bugs",
+          "fixing broken links",
+          "fixing bugs",
+          "reviewing traffic/engagement analytics",
+          "reviewing traffic",
+          "reviewing engagement analytics",
+          "gathering user feedback",
+          "applying security updates"
+        ]
+      }
+    ];
+
+    const app = document.getElementById("app");
+    let currentIndex = 0;
+    let timeLeft = 0;
+    let timerId = null;
+    let isTransitioning = false;
+
+    let studentInfo = {
+      fullName: "",
+      gradeLevelSection: "",
+      examDate: new Date().toISOString().split("T")[0]
+    };
+
+    let selectedChoiceIndex = null;
+    let tfSelection = null;
+    let tfCorrectionText = "";
+    let enumInputs = [];
+    const results = [];
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function formatTypeLabel(type) {
+      if (type === "multiple-choice") return "Part I • Multiple Choice";
+      if (type === "true-false") return "Part II • Modifiable True or False";
+      if (type === "enumeration") return "Part III • Enumeration";
+      return "Exam Item";
+    }
+
+    function renderLoginScreen() {
+      clearInterval(timerId);
+      currentIndex = 0;
+      results.length = 0;
+
+      app.innerHTML = `
+        <div class="header-banner">
+          <small>REPUBLIC OF THE PHILIPPINES • DEPARTMENT OF EDUCATION</small>
+          <strong>EMPOWERMENT TECHNOLOGIES — TERM 2 EXAMINATION (60 ITEMS)</strong>
+        </div>
+        <h2>Examinee Registration</h2>
+        <p class="sub-note">Enter your Name, Grade &amp; Section, and Date. Item 1 and its countdown timer begin immediately after you proceed.</p>
+        <div class="rules-box">
+          <strong>Examination Timing &amp; Rules:</strong><br/>
+          • Part I (Multiple Choice, Items 1–40): <strong>60 seconds</strong> per item.<br/>
+          • Part II (Modifiable True or False, Items 41–50): <strong>120 seconds</strong> per item.<br/>
+          • Part III (Enumeration, Items 51–60): <strong>120 seconds</strong> per item group.<br/>
+          • When the timer reaches <strong>0s</strong>, the exam automatically advances to the next item.
+        </div>
+        <form class="login-form" id="login-form">
+          <div class="field-group">
+            <label for="learner-name">Name *</label>
+            <input id="learner-name" type="text" class="text-input" placeholder="Last Name, First Name, M.I." required />
+          </div>
+          <div class="field-group">
+            <label for="grade-level-section">Grade &amp; Section *</label>
+            <input id="grade-level-section" type="text" class="text-input" placeholder="e.g., Grade 12 - ICT" required />
+          </div>
+          <div class="field-group">
+            <label for="exam-date">Date *</label>
+            <input id="exam-date" type="date" class="text-input" value="${escapeHtml(studentInfo.examDate)}" required />
+          </div>
+          <div class="actions">
+            <button class="next-btn" type="submit">Start Examination →</button>
+          </div>
+        </form>
+      `;
+
+      document.getElementById("login-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const nameVal = document.getElementById("learner-name").value.trim();
+        const sectionVal = document.getElementById("grade-level-section").value.trim();
+        const dateVal = document.getElementById("exam-date").value;
+
+        if (!nameVal || !sectionVal || !dateVal) return;
+
+        studentInfo = {
+          fullName: nameVal,
+          gradeLevelSection: sectionVal,
+          examDate: dateVal
+        };
+
+        startQuestion(0);
+      });
+    }
+
+    function startQuestion(index) {
+      clearInterval(timerId);
+      isTransitioning = false;
+      selectedChoiceIndex = null;
+      tfSelection = null;
+      tfCorrectionText = "";
+      enumInputs = [];
+
+      const item = examItems[index];
+      timeLeft = item.duration || 60;
+      const progressPct = ((index + 1) / examItems.length) * 100;
+
+      app.innerHTML = `
+        <div class="header-banner">
+          <small>REPUBLIC OF THE PHILIPPINES • DEPARTMENT OF EDUCATION</small>
+          <strong>EMPOWERMENT TECHNOLOGIES — TERM 2 EXAMINATION (60 ITEMS)</strong>
+        </div>
+        <div class="topbar">
+          <div class="meta-group">
+            <span class="badge">${item.label} (${index + 1} of ${examItems.length})</span>
+            <span class="type-pill">${formatTypeLabel(item.type)}</span>
+          </div>
+          <div class="timer" id="timer">${timeLeft}s</div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width: ${progressPct}%;"></div>
+        </div>
+        <h2>${escapeHtml(item.question)}</h2>
+        <div id="answer-area"></div>
+        <div class="actions">
+          <button class="next-btn" id="next-btn" type="button">
+            ${index === examItems.length - 1 ? "Submit Examination" : "Next Item →"}
+          </button>
+        </div>
+      `;
+
+      const answerArea = document.getElementById("answer-area");
+
+      if (item.type === "enumeration") {
+        const count = item.itemCount || 1;
+        enumInputs = Array(count).fill("");
+        const grid = document.createElement("div");
+        grid.className = "enum-grid";
+
+        for (let i = 0; i < count; i += 1) {
+          const input = document.createElement("input");
+          input.type = "text";
+          input.className = "text-input";
+          input.placeholder = `Answer ${i + 1}`;
+          input.addEventListener("input", (e) => {
+            enumInputs[i] = e.target.value.trim();
+          });
+          grid.appendChild(input);
+        }
+        answerArea.appendChild(grid);
+      } else if (item.type === "true-false") {
+        const note = document.createElement("p");
+        note.className = "sub-note";
+        note.textContent = "Select TRUE if the statement is correct. If FALSE, select FALSE and type the replacement word or phrase to make the statement true.";
+        answerArea.appendChild(note);
+
+        const choicesBox = document.createElement("div");
+        choicesBox.className = "choices";
+
+        const modBox = document.createElement("div");
+        modBox.className = "mod-box";
+        modBox.style.display = "none";
+        modBox.innerHTML = `
+          <label for="tf-correction">Replacement word/phrase to make the statement TRUE:</label>
+          <input id="tf-correction" type="text" class="text-input" placeholder="Enter the replacement word or phrase..." />
+        `;
+
+        [
+          { label: "TRUE", val: true },
+          { label: "FALSE", val: false }
+        ].forEach((opt) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "choice-btn";
+          btn.textContent = opt.label;
+          btn.addEventListener("click", () => {
+            tfSelection = opt.val;
+            [...choicesBox.children].forEach((el, i) => {
+              el.classList.toggle("selected", (i === 0 && opt.val) || (i === 1 && !opt.val));
+            });
+            modBox.style.display = opt.val === false ? "block" : "none";
+          });
+          choicesBox.appendChild(btn);
+        });
+
+        answerArea.appendChild(choicesBox);
+        answerArea.appendChild(modBox);
+
+        const correctionInput = modBox.querySelector("#tf-correction");
+        correctionInput.addEventListener("input", (e) => {
+          tfCorrectionText = e.target.value.trim();
+        });
+      } else {
+        const choicesBox = document.createElement("div");
+        choicesBox.className = "choices";
+
+        (item.choices || []).forEach((choiceText, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "choice-btn";
+          btn.textContent = `${String.fromCharCode(65 + idx)}. ${choiceText}`;
+
+          btn.addEventListener("click", () => {
+            selectedChoiceIndex = idx;
+            [...choicesBox.children].forEach((el, i) => {
+              el.classList.toggle("selected", i === idx);
+            });
+          });
+          choicesBox.appendChild(btn);
+        });
+
+        answerArea.appendChild(choicesBox);
+      }
+
+      document.getElementById("next-btn").addEventListener("click", () => {
+        completeQuestion(false);
+      });
+
+      const timerEl = document.getElementById("timer");
+      timerId = setInterval(() => {
+        timeLeft -= 1;
+        if (timeLeft <= 0) {
+          timerEl.textContent = "0s";
+          timerEl.classList.add("danger");
+          completeQuestion(true);
+        } else {
+          timerEl.textContent = `${timeLeft}s`;
+          timerEl.classList.toggle("danger", timeLeft <= 10);
+        }
+      }, 1000);
+    }
+
+    function evaluateItem(item) {
+      if (item.type === "enumeration") {
+        const accepted = (item.acceptedAnswers || []).map((a) => a.toLowerCase().trim());
+        const cleaned = enumInputs.map((v) => v.toLowerCase().trim()).filter(Boolean);
+        const uniqueMatches = new Set(cleaned.filter((v) => accepted.includes(v)));
+        const required = item.itemCount || 1;
+        return {
+          answerSummary: cleaned.length ? enumInputs.filter(Boolean).join(" | ") : "No answer",
+          scoreEarned: Math.min(uniqueMatches.size, required),
+          maxScore: required
+        };
+      }
+
+      if (item.type === "true-false") {
+        if (tfSelection === null) {
+          return { answerSummary: "No answer", scoreEarned: 0, maxScore: 1 };
+        }
+        if (item.isTrue) {
+          return {
+            answerSummary: tfSelection ? "TRUE" : `FALSE (${tfCorrectionText || "no correction"})`,
+            scoreEarned: tfSelection === true ? 1 : 0,
+            maxScore: 1
+          };
+        }
+        const normalizedCorrection = tfCorrectionText.toLowerCase().trim();
+        const accepted = (item.acceptedCorrections || []).map((c) => c.toLowerCase().trim());
+        const isCorrect = tfSelection === false && accepted.includes(normalizedCorrection);
+        return {
+          answerSummary: tfSelection
+            ? "TRUE"
+            : `FALSE — ${tfCorrectionText || "no replacement entered"}`,
+          scoreEarned: isCorrect ? 1 : 0,
+          maxScore: 1
+        };
+      }
+
+      const isCorrect = selectedChoiceIndex === item.correctIndex;
+      return {
+        answerSummary:
+          selectedChoiceIndex !== null && item.choices
+            ? `${String.fromCharCode(65 + selectedChoiceIndex)}. ${item.choices[selectedChoiceIndex]}`
+            : "No answer",
+        scoreEarned: isCorrect ? 1 : 0,
+        maxScore: 1
+      };
+    }
+
+    function completeQuestion(autoAdvanced) {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      clearInterval(timerId);
+
+      const item = examItems[currentIndex];
+      const spentSeconds = (item.duration || 60) - Math.max(timeLeft, 0);
+      const evalResult = evaluateItem(item);
+
+      results.push({
+        label: item.label,
+        type: item.type,
+        answerSummary: evalResult.answerSummary,
+        scoreEarned: evalResult.scoreEarned,
+        maxScore: evalResult.maxScore,
+        spentSeconds,
+        autoAdvanced
+      });
+
+      currentIndex += 1;
+      if (currentIndex < examItems.length) {
+        startQuestion(currentIndex);
+      } else {
+        renderSummary();
+      }
+    }
+
+    function renderSummary() {
+      const totalEarned = results.reduce((sum, r) => sum + r.scoreEarned, 0);
+      const totalPossible = results.reduce((sum, r) => sum + r.maxScore, 0);
+      const percentage = totalPossible > 0 ? ((totalEarned / totalPossible) * 100).toFixed(1) : "0.0";
+
+      const part1Earned = results
+        .filter((r) => r.type === "multiple-choice")
+        .reduce((sum, r) => sum + r.scoreEarned, 0);
+      const part2Earned = results
+        .filter((r) => r.type === "true-false")
+        .reduce((sum, r) => sum + r.scoreEarned, 0);
+      const part3Earned = results
+        .filter((r) => r.type === "enumeration")
+        .reduce((sum, r) => sum + r.scoreEarned, 0);
+
+      const responsesText = results
+        .map((res) => `${res.label}: ${res.answerSummary} (${res.scoreEarned}/${res.maxScore})`)
+        .join(" ; ");
+
+      sendResultsToSheet({
+        subject: "Empowerment Technologies — Term 2 Examination",
+        fullName: studentInfo.fullName,
+        gradeLevelSection: studentInfo.gradeLevelSection,
+        examDate: studentInfo.examDate,
+        totalEarned,
+        totalPossible,
+        percentage: `${percentage}%`,
+        part1Earned,
+        part2Earned,
+        part3Earned,
+        responsesText
+      });
+
+      const rows = results
+        .map((res) => `
+          <div class="summary-item">
+            <strong>${res.label} (${formatTypeLabel(res.type)}):</strong>
+            ${res.scoreEarned} / ${res.maxScore} pts
+            <small>(${res.spentSeconds}s${res.autoAdvanced ? " • auto-advanced" : ""})</small><br/>
+            <small>Response: ${escapeHtml(res.answerSummary)}</small>
+          </div>
+        `)
+        .join("");
+
+      app.innerHTML = `
+        <div class="header-banner">
+          <small>REPUBLIC OF THE PHILIPPINES • DEPARTMENT OF EDUCATION</small>
+          <strong>EMPOWERMENT TECHNOLOGIES — TERM 2 EXAMINATION (60 ITEMS)</strong>
+        </div>
+        <h2>Examination Submitted — Score Report</h2>
+        <div class="student-meta-box">
+          <div><strong>Name:</strong> ${escapeHtml(studentInfo.fullName)}</div>
+          <div><strong>Grade &amp; Section:</strong> ${escapeHtml(studentInfo.gradeLevelSection)}</div>
+          <div><strong>Date:</strong> ${escapeHtml(studentInfo.examDate)}</div>
+        </div>
+        <div class="score-box">
+          <p class="score-main">Total Score: ${totalEarned} / ${totalPossible} (${percentage}%)</p>
+          <small>Submitted at ${new Date().toLocaleString()}</small>
+        </div>
+        <div class="part-grid">
+          <div class="part-card"><strong>Part I (Multiple Choice):</strong><br/>${part1Earned} / 40 pts</div>
+          <div class="part-card"><strong>Part II (Mod. True/False):</strong><br/>${part2Earned} / 10 pts</div>
+          <div class="part-card"><strong>Part III (Enumeration):</strong><br/>${part3Earned} / 10 pts</div>
+        </div>
+        <button class="print-btn" id="print-score-btn" type="button">Print / Save Score Sheet</button>
+        ${rows}
+      `;
+
+      document.getElementById("print-score-btn").addEventListener("click", () => {
+        window.print();
+      });
+    }
+
+    const GOOGLE_SHEET_WEB_APP_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+
+    function sendResultsToSheet(payload) {
+      if (!GOOGLE_SHEET_WEB_APP_URL || GOOGLE_SHEET_WEB_APP_URL.includes("https://script.google.com/macros/s/AKfycbyaowJlvWdvrEdIJcl6RoR7W1hY6YEGdXl4bxbzQXi-rIBotS58_e_se0oSw4C3bp0ehw/exec")) {
+        return;
+      }
+
+      fetch(GOOGLE_SHEET_WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      }).catch((err) => {
+        console.error("Failed to send score to Google Sheet:", err);
+      });
+    }
+
+    renderLoginScreen();
+  </script>
+</body>
+</html>
